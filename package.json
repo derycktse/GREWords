@@ -1,0 +1,22 @@
+{
+  "name": "gre-words",
+  "version": "1.0.0",
+  "description": "gre words",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://derycktse@github.com/derycktse/GREWords.git"
+  },
+  "author": "Derycktse",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/derycktse/GREWords/issues"
+  },
+  "homepage": "https://github.com/derycktse/GREWords#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.1"
+  }
+}

@@ -23,7 +23,11 @@ const server = http.createServer((req, res) => {
 
   fs.readFile(todayPath, (err, data) => {
     if (err) throw err
-    res.end(data)
+    res.writeHead(200, {"Content-Type": "text/html; charset=utf-8"});
+    data = data.toString().replace(/(?:\r\n|\r|\n)/g, '<br />');
+    res.end(data,  ()=>{
+      console.log('data has been send')
+    })
   })
 
 

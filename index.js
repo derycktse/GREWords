@@ -13,7 +13,7 @@ setInterval(function () {
 
 
 const server = http.createServer((req, res) => {
-  let today = utils.getDateString(new Date())
+  let today = utils.getBeijingTimeString(new Date())
   let todayPath = path.resolve(__dirname, './results/' + today + '.txt')
   fetchData()
   if (!fs.existsSync(todayPath)) {
@@ -24,6 +24,7 @@ const server = http.createServer((req, res) => {
   fs.readFile(todayPath, (err, data) => {
     if (err) throw err
     res.writeHead(200, {"Content-Type": "text/html; charset=utf-8"});
+    res.write(`${today}数据如下：`)
     data = data.toString().replace(/(?:\r\n|\r|\n)/g, '<br />');
     res.end(data,  ()=>{
       console.log('data has been send')

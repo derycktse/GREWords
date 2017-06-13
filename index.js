@@ -2,6 +2,7 @@ const http = require('http')
 const fs = require('fs')
 const utils = require('./lib/utils')
 const path = require('path')
+const url = require('url')
 const formatHTML = require('./lib/format-html')
 
 const PORT = process.env.PORT || 8080
@@ -15,6 +16,13 @@ setInterval(function () {
 
 const server = http.createServer((req, res) => {
   let today = utils.getBeijingTimeString(new Date(), 'yyyyMMdd')
+
+  let pUrl = url.parse(req.url)
+  let pathname = pUrl.pathname
+  if (/\/\d{6}/.test(pathname)) {
+    today = pathname.match(/\/(\d{8})/)[1]
+  }
+  console.log(pUrl)
   let todayPath = path.resolve(__dirname, './results/' + today + '.txt')
   fetchData()
   if (!fs.existsSync(todayPath)) {

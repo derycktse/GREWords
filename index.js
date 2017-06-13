@@ -25,7 +25,7 @@ const server = http.createServer((req, res) => {
   fs.readFile(todayPath, (err, data) => {
     if (err) throw err
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-    res.write(`${today}数据如下：`)
+    res.write(`${today}数据如下：<br />`)
     let content = formatHTML(data.toString())
     res.end(content, () => {
       console.log(`${today} data has been send`)

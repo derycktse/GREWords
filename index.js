@@ -12,6 +12,7 @@ const fetchData = require('./lib/handle-data')
 setInterval(function () {
   fetchData()
 }, 900000)
+fetchData()
 
 
 const server = http.createServer((req, res) => {
@@ -24,7 +25,6 @@ const server = http.createServer((req, res) => {
   }
   console.log(pUrl)
   let todayPath = path.resolve(__dirname, './results/' + today + '.txt')
-  fetchData()
   if (!fs.existsSync(todayPath)) {
     res.end(`${today} has no data`)
     return

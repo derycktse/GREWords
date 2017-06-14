@@ -20,6 +20,10 @@ const server = http.createServer((req, res) => {
 
   let pUrl = url.parse(req.url)
   let pathname = pUrl.pathname
+  if(pathname !=='/' && !/\/\d{6}/.test(pathname)){
+    res.end()
+    return 
+  }
   if (/\/\d{6}/.test(pathname)) {
     today = pathname.match(/\/(\d{8})/)[1]
   }

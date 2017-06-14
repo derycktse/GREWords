@@ -14,7 +14,7 @@ setInterval(function () {
 }, 900000)
 fetchData()
 
-
+let serverStartTime
 const server = http.createServer((req, res) => {
   let today = utils.getBeijingTimeString(new Date(), 'yyyyMMdd')
 
@@ -41,7 +41,9 @@ const server = http.createServer((req, res) => {
       return
     }
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
+    res.write(`server is started at ${serverStartTime}<br />`)
     res.write(`${today}数据如下：<br />`)
+
     let content = ''
     try {
       content = formatHTML(data.toString())
@@ -56,6 +58,7 @@ const server = http.createServer((req, res) => {
 
 
 }).listen(PORT, () => {
+  serverStartTime = new Date()
   console.log(`server is listening at ${PORT}`)
 })
 

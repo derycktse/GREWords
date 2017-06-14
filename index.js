@@ -38,7 +38,13 @@ const server = http.createServer((req, res) => {
     }
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.write(`${today}数据如下：<br />`)
-    let content = formatHTML(data.toString())
+    let content = ''
+    try {
+      content = formatHTML(data.toString())
+    }
+    catch (e) {
+      content = e.message
+    }
     res.end(content, () => {
       console.log(`${today} data has been send`)
     })

@@ -23,7 +23,6 @@ const server = http.createServer((req, res) => {
   if (/\/\d{6}/.test(pathname)) {
     today = pathname.match(/\/(\d{8})/)[1]
   }
-  console.log(pUrl)
   let todayPath = path.resolve(__dirname, './results/' + today + '.txt')
   if (!fs.existsSync(todayPath)) {
     res.end(`${today} has no data`)
@@ -31,7 +30,12 @@ const server = http.createServer((req, res) => {
   }
 
   fs.readFile(todayPath, (err, data) => {
-    if (err) throw err
+    if (err) {
+      // throw err
+      res.end(`err accur when read ${today}.txt
+      ${err}`)
+      return
+    }
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.write(`${today}数据如下：<br />`)
     let content = formatHTML(data.toString())

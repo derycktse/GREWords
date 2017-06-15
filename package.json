@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/derycktse/GREWords#readme",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.1"
+    "cheerio": "^1.0.0-rc.1",
+    "mongodb": "^2.2.28"
   }
 }

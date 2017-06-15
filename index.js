@@ -42,7 +42,7 @@ const server = http.createServer((req, res) => {
     }
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.write(`server is started at ${serverStartTime}<br />`)
-    res.write(`${today}数据如下：<br />`)
+    res.write(`${today}的数据如下：<br />`)
 
     let content = ''
     try {

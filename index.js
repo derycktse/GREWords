@@ -3,7 +3,8 @@ const fs = require('fs')
 const utils = require('./lib/utils')
 const path = require('path')
 const url = require('url')
-const formatHTML = require('./lib/format-html')
+const config = require('./config')
+const GREHandler = require('./lib/gre-handler')
 
 const PORT = process.env.PORT || 8080
 
@@ -20,40 +21,35 @@ const server = http.createServer((req, res) => {
 
   let pUrl = url.parse(req.url)
   let pathname = pUrl.pathname
-  if(pathname !=='/' && !/\/\d{6}/.test(pathname)){
+  if (pathname !== '/' && !/\/\d{6}/.test(pathname)) {
     res.end()
-    return 
+    return
   }
   if (/\/\d{6}/.test(pathname)) {
     today = pathname.match(/\/(\d{8})/)[1]
   }
-  let todayPath = path.resolve(__dirname, './results/' + today + '.txt')
-  if (!fs.existsSync(todayPath)) {
-    res.end(`${today} has no data`)
-    return
-  }
 
-  fs.readFile(todayPath, (err, data) => {
-    if (err) {
-      // throw err
-      res.end(`err accur when read ${today}.txt
-      ${err}`)
-      return
-    }
+
+
+  let grehl = new GREHandler({
+    url: config.db,
+    collectionName: config.wordsCollection
+  })
+
+  grehl.findDocuments({
+    date: today
+  }).then(result => {
     res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
     res.write(`server is started at ${serverStartTime}<br />`)
-    res.write(`${today}数据如下：<br />`)
-
-    let content = ''
+    res.write(`${today}的数据如下：<br />`)
+    let html = grehl.objList2HTML(result)
+    res.end(html)
+  }).catch(err => {
     try {
-      content = formatHTML(data.toString())
+      res.end(`server error: ${err.toString()}`)
+    } catch (ex) {
+      res.end('error')
     }
-    catch (e) {
-      content = e.message
-    }
-    res.end(content, () => {
-      console.log(`${today} data has been send`)
-    })
   })
 
 

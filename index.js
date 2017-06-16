@@ -3,7 +3,6 @@ const fs = require('fs')
 const utils = require('./lib/utils')
 const path = require('path')
 const url = require('url')
-const config = require('./config')
 const GREHandler = require('./lib/gre-handler')
 
 const PORT = process.env.PORT || 8080
@@ -32,8 +31,8 @@ const server = http.createServer((req, res) => {
 
 
   let grehl = new GREHandler({
-    url: config.db,
-    collectionName: config.wordsCollection
+    url: process.env.MONGODB_DG || require('./config/').db,
+    collectionName: process.env.MONGODB_COLLECTION_GRE || require('./config/').wordsCollection
   })
 
   grehl.findDocuments({

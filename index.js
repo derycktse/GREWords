@@ -31,8 +31,8 @@ const server = http.createServer((req, res) => {
 
 
   let grehl = new GREHandler({
-    url: process.env.MONGODB_DG || require('../config/').db,
-    collectionName: process.env.MONGODB_COLLECTION_GRE || require('../config/').wordsCollection
+    url: process.env.MONGODB_DG || require('./config/').db,
+    collectionName: process.env.MONGODB_COLLECTION_GRE || require('./config/').wordsCollection
   })
 
   grehl.findDocuments({

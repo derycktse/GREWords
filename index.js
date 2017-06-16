@@ -3,7 +3,6 @@ const fs = require('fs')
 const utils = require('./lib/utils')
 const path = require('path')
 const url = require('url')
-const config = require('./config')
 const GREHandler = require('./lib/gre-handler')
 
 const PORT = process.env.PORT || 8080

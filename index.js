@@ -1,9 +1,8 @@
-const http = require('http')
-const fs = require('fs')
 const utils = require('./lib/utils')
-const path = require('path')
-const url = require('url')
 const GREHandler = require('./lib/gre-handler')
+const express = require('express')
+let app = express()
+let greRouter = require('./lib/router')
 
 const PORT = process.env.PORT || 8080
 
@@ -14,47 +13,8 @@ setInterval(function () {
 }, 900000)
 fetchData()
 
-let serverStartTime
-const server = http.createServer((req, res) => {
-  let today = utils.getBeijingTimeString(new Date(), 'yyyyMMdd')
-
-  let pUrl = url.parse(req.url)
-  let pathname = pUrl.pathname
-  if (pathname !== '/' && !/\/\d{6}/.test(pathname)) {
-    res.end()
-    return
-  }
-  if (/\/\d{6}/.test(pathname)) {
-    today = pathname.match(/\/(\d{8})/)[1]
-  }
-
-
-
-  let grehl = new GREHandler({
-    url: process.env.MONGODB_DG || require('./config/').db,
-    collectionName: process.env.MONGODB_COLLECTION_GRE || require('./config/').wordsCollection
-  })
-
-  grehl.findDocuments({
-    date: today
-  }).then(result => {
-    res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-    res.write(`server is started at ${serverStartTime}<br />`)
-    res.write(`${today}的数据如下：<br />`)
-    let html = grehl.objList2HTML(result)
-    res.end(html)
-  }).catch(err => {
-    try {
-      res.end(`server error: ${err.toString()}`)
-    } catch (ex) {
-      res.end('error')
-    }
-  })
-
-
-}).listen(PORT, () => {
-  serverStartTime = new Date()
+app.use('/',greRouter)
+app.use('/assets', express.static(require('path').resolve(__dirname, './assets/')))
+app.listen(PORT, () => {
   console.log(`server is listening at ${PORT}`)
 })
-
-
